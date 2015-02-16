@@ -74,37 +74,31 @@ public:
   double log10_obs_lik_0;
   double log10_obs_lik_1;
   double log10_obs_lik_2;
-  //double log10_obs_lik_3;
     double new_log10_obs_lik_;
   double pi0_;
   double pi0_0;
   double pi0_1;
   double pi0_2;
- // double pi0_3;
     double new_pi0_;
   vector<double> grid_wts_; // lambda_l
   vector<double> grid_wts_0;
   vector<double> grid_wts_1;
   vector<double> grid_wts_2;
-//  vector<double> grid_wts_3;
     vector<double> new_grid_wts_;
   vector<double> config_prior_; // eta_j
   vector<double> config_prior_0;
   vector<double> config_prior_1;
   vector<double> config_prior_2;
-//  vector<double> config_prior_3;
     vector<double> new_config_prior_;
   vector<double> type_prior_; // pi_k
   vector<double> type_prior_0;
   vector<double> type_prior_1;
   vector<double> type_prior_2;
-//  vector<double> type_prior_3;
     vector<double> new_type_prior_;
   vector<vector<double> > subgroup_prior_; // q_ks
   vector<vector<double> > subgroup_prior_0;
   vector<vector<double> > subgroup_prior_1;
   vector<vector<double> > subgroup_prior_2;
-//  vector<vector<double> > subgroup_prior_3;
     vector<vector<double> > new_subgroup_prior_;
   
   // data structures for the confidence intervals
@@ -127,24 +121,16 @@ public:
 
 
   // data structure for control variables in squarem
-  int squaremK_=1;
+  int squaremK_=1;//current implementation
   int method_=3;//1,2,3 indicates the types of step length to be used in squarem1,squarem2, 4,5 for "rre" and "mpe" in cyclem1 and cyclem2,  standing for reduced-rank ("rre") or minimal-polynomial ("mpe") extrapolation.
-    // K=1 must go with method=1,2 or 3
-    // K>1 must go with method=4 or 5
   double mstep_=4;
-  //int maxiter=1500;
+  //int maxiter=1500;max_nb_iters_
   bool square=true;
-  //bool trace=true;//currently set to be true for debugging purpose
+  //bool trace=true;verbose_
   double stepmin0_=1;
   double stepmax0_=1;
   double kr_=1;
   double objfninc_=1;//0 to enforce monotonicity, Inf for non-monotonic scheme, 1 for monotonicity far from solution and allows for non-monotonicity closer to solution
-  //double tol=1e-7;
-    
-  // Additional data structure for squarem
-  double pi0_1,pi0_2,pi0_3;
-    
-  
   
   Controller();
   Controller(const size_t & nb_subgroups, const string & model,
@@ -900,26 +886,7 @@ void Controller::update_params(int squaremstep=0)
                 
                 for(size_t l = 0; l < grid_size_; ++l)
                     grid_wts_2[l] = new_grid_wts_[l];
-            }/*
-            case 3:{
-                log10_obs_lik_3=new_log10_obs_lik_;
-                pi0_3 = new_pi0_;
-                if(model_ == "configs"){
-                    if(dim_ > 1)
-                        for(size_t k = 0; k < dim_; ++k)
-                            config_prior_3[k] = new_config_prior_[k];
-                }
-                else if(model_ == "types"){
-                    for(size_t k = 0; k < dim_; ++k){
-                        type_prior_3[k] = new_type_prior_[k];
-                        for(size_t s = 0; s < nb_subgroups_; ++s)
-                            subgroup_prior_3[k][s] = new_subgroup_prior_[k][s];
-                    }
-                }
-                
-                for(size_t l = 0; l < grid_size_; ++l)
-                    grid_wts_3[l] = new_grid_wts_[l];
-            }*/
+            }
         }
     }
 }
